@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Resfriamento de Alimentos</title>
+    <link rel="stylesheet" href="stalyer.css">
+</head>
+<body>
+    <!-- Container principal da página -->
+    <div class="container">
+        <!-- Título principal -->
+        <h1>Cálculo de Resfriamento de Alimentos</h1>
+
+        <!-- Formulário de entrada para o cálculo -->
+        <form id="resfriamentoForm">
+            <!-- Campo para a Temperatura Inicial (T0) -->
+            <div class="input-group">
+                <label for="T0">Temperatura Inicial (T0) em °C:</label>
+                <input type="number" id="T0" name="T0" step="0.1" placeholder="Ex: 20" required>
+            </div>
+
+            <!-- Campo para a Temperatura Ambiente (TA) -->
+            <div class="input-group">
+                <label for="TA">Temperatura Ambiente (TA) em °C:</label>
+                <input type="number" id="TA" name="TA" step="0.1" placeholder="Ex: 4" required>
+            </div>
+
+            <!-- Campo para a Constante de Resfriamento (k) -->
+            <div class="input-group">
+                <label for="k">Constante de Resfriamento (k):</label>
+                <input type="number" id="k" name="k" step="0.001" placeholder="Ex: 0.03" required>
+            </div>
+
+            <!-- Campo para a Variação de Temperatura (ΔT) -->
+            <div class="input-group">
+                <label for="deltaT">Variação de Temperatura (ΔT) em °C:</label>
+                <input type="number" id="deltaT" name="deltaT" step="0.1" placeholder="Ex: 7" required>
+            </div>
+
+            <!-- Botão de submissão para realizar o cálculo -->
+            <button type="submit">Calcular</button>
+        </form>
+
+        <!-- Seção para exibir o resultado do cálculo -->
+        <div id="resultado">
+            <h2>Tempo de Resfriamento: <span id="tempo"></span> minutos</h2>
+        </div>
+    </div>
+
+    <!-- Script para manipular o formulário e calcular o tempo de resfriamento -->
+    <script>
+        // Função que implementa a fórmula da Lei de Resfriamento de Newton
+        function calcularTempoResfriamento(T0, TA, k, deltaT) {
+            try {
+                // Calcula o tempo de resfriamento de acordo com a fórmula e retorna o resultado
+                const tempo = -(1 / k) * Math.log(deltaT / (T0 - TA));
+                return Math.abs(tempo).toFixed(2); // Retorna o valor absoluto com duas casas decimais
+            } catch (error) {
+                return "Erro: Verifique os valores fornecidos.";
+            }
+        }
+
+        // Captura o evento de submissão do formulário
+        document.getElementById('resfriamentoForm').onsubmit = function(e) {
+            e.preventDefault(); // Previne o comportamento padrão do formulário
+
+            // Obtém os valores dos campos do formulário
+            const T0 = parseFloat(document.getElementById('T0').value);
+            const TA = parseFloat(document.getElementById('TA').value);
+            const k = parseFloat(document.getElementById('k').value);
+            const deltaT = parseFloat(document.getElementById('deltaT').value);
+
+            // Calcula o tempo de resfriamento
+            const tempo = calcularTempoResfriamento(T0, TA, k, deltaT);
+
+            // Exibe o resultado na página
+            document.getElementById('tempo').textContent = tempo;
+        };
+    </script>
+</body>
+</html>
